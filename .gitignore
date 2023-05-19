@@ -1,0 +1,9 @@
+agenda.txt
+test-output
+target
+.apt_generated
+.apt_generated_tests
+.classpath
+.git
+.settings
+TDD_NIH.iml
