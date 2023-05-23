@@ -1,7 +1,5 @@
 package common;
 
-import static common.CommonWait.waitUntilClickable;
-import static common.CommonWait.waitUntilVisible;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
@@ -23,15 +21,19 @@ import org.openqa.selenium.support.ui.Select;
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
+
 import report.Log;
+import static common.CommonWait.waitUntilClickable;
+import static common.CommonWait.waitUntilVisible;
+import util.Configuration;
 import util.Misc;
 
 public class CommonAction {
+	static Configuration config = new Configuration();
 
-	static String screenshotPath = "C:\\Users\\imsdh\\eclipse-workspace\\TDD_NIH\\test-output\\screenshot\\";
-	static String tessarectTextPath = "C:\\Users\\imsdh\\eclipse-workspace\\TDD_NIH\\test-output\\OCR Files\\";
-	static File target;
-	static String ocrString;
+	static String test_output_path = config.readProp("test_output_path");
+	static String screenshotPath = config.readProp("screenshotPath");
+	static String tessarectTextPath = config.readProp("tessarectTextPath");
 
 	public static String getInnerHTML(WebElement element) {
 		waitUntilVisible(element);
@@ -91,10 +93,13 @@ public class CommonAction {
 
 	}
 
-	public static void screenshotPage(WebDriver driver, String name) throws IOException {
+	public static File screenshotPage(WebDriver driver, String name) throws IOException {
+		File screenShotTarget;
 		File source = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-		target = new File(screenshotPath + name + ".png");
-		FileUtils.copyFile(source, target);
+		String dir = createDirectory(screenshotPath);
+		screenShotTarget = new File(dir + name + ".png");
+		FileUtils.copyFile(source, screenShotTarget);
+		return screenShotTarget;
 	}
 
 	public static void mouseHover(WebDriver driver, WebElement element) {
@@ -121,10 +126,11 @@ public class CommonAction {
 
 	}
 
-	public static String saveOcrImage() {
+	public static String saveOcrImage(File screenshot) {
 		ITesseract image = new Tesseract();
+		String ocrString = "";
 		try {
-			ocrString = image.doOCR(target);
+			ocrString = image.doOCR(screenshot);
 			System.out.println("******************** OCR TEXT START ********************");
 			System.out.println(ocrString);
 			System.out.println("******************** OCR TEXT END ********************");
@@ -141,21 +147,26 @@ public class CommonAction {
 		return timestamp;
 	}
 
-	public static void textToFile(String text) throws IOException {
-		// check if directory exists
-		File directory = new File(tessarectTextPath);
-		if (!directory.exists()) {
-			directory.mkdirs();// if not create directory
-		}
-		String filePath = directory.getAbsolutePath() + File.separator + "ocr.txt"; // Build the file path
-		text = getTimestamp() + "\n" + text; // adding timestamp and new line
+	public static void textToFile(String text, String name) throws IOException {
+		String dir = createDirectory(tessarectTextPath);
+		// Create the empty text file name ocr.txt
+		String filePath = dir + File.separator + name + ".txt"; // Build the file path
 
-		// Create the text file.
+		text = getTimestamp() + "\n" + text; // adding timestamp and new line
 		FileWriter fileWriter = new FileWriter(filePath);
 		fileWriter.write(text);// write the text to the file, not yet saved
 		fileWriter.close();// save the file
 
-		System.out.println("String saved to file successfully.");
+	}
+
+	public static String createDirectory(String dirName) {
+		String dir = test_output_path + dirName;
+		// check if directory exists
+		File directory = new File(dir);
+		if (!directory.exists()) {
+			directory.mkdirs();// if not create directory
+		}
+		return dir;
 	}
 
 }

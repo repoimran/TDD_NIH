@@ -7,7 +7,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>TDD_NIH</name>
 	<description>TDD_NIH</description>
-		<properties>
+	<properties>
 		<seleniumVersion>4.8.3</seleniumVersion>
 		<testngVersion>7.7.1</testngVersion>
 		<webdriverManagerVersion>5.3.2</webdriverManagerVersion>
@@ -40,12 +40,20 @@
 			<artifactId>tess4j</artifactId>
 			<version>4.5.4</version>
 		</dependency>
+		<!--
+		https://mvnrepository.com/artifact/com.github.stephenc.monte/monte-screen-recorder -->
+		<dependency>
+			<groupId>com.github.stephenc.monte</groupId>
+			<artifactId>monte-screen-recorder</artifactId>
+			<version>0.7.7.0</version>
+		</dependency>
 
 
 	</dependencies>
-		<build>
+	<build>
 		<plugins>
-			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
+			<!--
+			https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

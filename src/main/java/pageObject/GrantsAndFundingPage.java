@@ -1,39 +1,43 @@
 package pageObject;
 
+import static common.CommonAction.click;
+import static common.CommonAction.saveOcrImage;
+import static common.CommonAction.screenshotPage;
+import static common.CommonAction.textToFile;
 import static org.openqa.selenium.support.PageFactory.initElements;
 import java.awt.AWTException;
+import java.io.File;
 import java.io.IOException;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
-import static common.CommonAction.*;
 import util.Configuration;
 
 public class GrantsAndFundingPage {
-	WebDriver driver;
 	Configuration config = new Configuration();
+	WebDriver driver;
+	File sShot;
 
 	public GrantsAndFundingPage(WebDriver driver) {
 		this.driver = driver;
 		initElements(driver, this);
 	}
 
-	@FindBy(xpath = "//td[contains(text(),'Guidance for research only')]//following::a")
-	WebElement pdfClick;
-
 	@FindBy(xpath = "//h4/a[text()='How to Apply']")
-	WebElement howToApplyLink;
+	WebElement howToApplyLinkLocator;
+
+	@FindBy(xpath = "//td[contains(text(),'Guidance for research only')]//following::a")
+	WebElement pdfClickLocator;
 
 	public void openPdfAndTakeScreenshot() throws AWTException, InterruptedException, IOException {
-
-		click(howToApplyLink);
-		click(pdfClick);
-		screenshotPage(driver, "pdfFile");
+		click(howToApplyLinkLocator);
+		click(pdfClickLocator);
+		sShot = screenshotPage(driver, "pdfFile");
 	}
 
 	public void saveOcrImageToText() throws Exception {
-		String s1 = saveOcrImage();
-		textToFile(s1);
+		String s1 = saveOcrImage(sShot);
+		textToFile(s1, "ocr");
 	}
 }
