@@ -29,9 +29,6 @@ public class HomePage {
 	@FindBy(xpath = "//a[normalize-space()='Subscribe']")
 	WebElement SubscribeTab;;
 
-//	@FindBy(xpath = "//div[@class='megamenu-col megamenu-leftcol']//ul[@class='sub-menu']/li")
-//	By submenuLists;
-
 	public void getPageTitle() {
 		String title = driver.getTitle();
 		System.out.println(title);
@@ -52,9 +49,6 @@ public class HomePage {
 		mouseHover(driver, healthInformationLink);
 		screenshotPage(driver, "SubMenuLinks");
 		TimeUnit.MILLISECONDS.sleep(config.readPropNum(Key.pause.name()));
-
-//		List<WebElement> li = driver.findElements(submenuLists);
-//		li.stream().map(WebElement::getText).forEach(System.out::println);
 	}
 
 	public void enterEmailForSubscribe() throws Exception {// did not work cause of captcha
@@ -65,7 +59,7 @@ public class HomePage {
 		WebElement e1 = driver.findElement(By.id("email"));
 		insert(e1, config.readProp(Key.email.name()));
 		WebElement e2 = driver.findElement(By.xpath("//input[@name='commit']"));
-		click(e2);
+		click(e2, driver); // jsClick overriding
 		WebElement e3 = driver.findElement(By.xpath("//input[@id='subscriber_email_confirm']"));
 		insert(e3, config.readProp(Key.email.name()));
 		WebElement e4 = driver.findElement(By.xpath("//input[@id='subscriber_password']"));

@@ -24,11 +24,18 @@ public class GrantsAndFundingPage {
 		initElements(driver, this);
 	}
 
+	@FindBy(xpath = "//span[normalize-space()='Grants & Funding']")
+	WebElement grantsAndFundingLinkLocator;
+
 	@FindBy(xpath = "//h4/a[text()='How to Apply']")
 	WebElement howToApplyLinkLocator;
 
 	@FindBy(xpath = "//td[contains(text(),'Guidance for research only')]//following::a")
 	WebElement pdfClickLocator;
+
+	public void clickGrantsAndFundingLink() {
+		click(grantsAndFundingLinkLocator);
+	}
 
 	public void openPdfAndTakeScreenshot() throws AWTException, InterruptedException, IOException {
 		click(howToApplyLinkLocator);

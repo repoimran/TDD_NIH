@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="NIH.GOV">
+	<parameter name="url" value="https://www.nih.gov/" />
+	<!--    <parameter name="headless" value="headless" />  -->
+  <test thread-count="5" name="Regression Test">
+	  
+	  <groups>
+			<run>
+				<exclude name="smoke"></exclude>
+			</run>
+		</groups>
+    <classes>
+		
+      <class name="auto.AutoHomePageTest"/>
+      <class name="auto.AutoGrantsAndFundingPageTest"/>
+      <class name="auto.AutoNewsAndEventsTest"/>
+		
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->

@@ -35,18 +35,31 @@ public class TestBase {
 	protected ResearchAndTrainingPage rp;
 
 	Configuration conf = new Configuration();
-	ChromeOptions options;
 
-	@Parameters("url")
+	@Parameters({ "url", "headless" })
 	@BeforeMethod
-	public void beforeEachTest(@Optional String url) {
-		initiatDriver(conf.readProp(Key.browser.name()));
-		initObject();
-		driver.manage().window().maximize();
-		int pageLoadTime = conf.readPropNum(Key.pageLoad.name());
-		int implicitLoadTime = conf.readPropNum(Key.implicitLoad.name());
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(pageLoadTime));
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitLoadTime));
+	public void beforeEachTest(@Optional String url, @Optional String headless) {
+
+		if (headless != null && headless.equalsIgnoreCase("headless")) {
+			System.out.println(
+					"*********************    >>>>>>   Going Headless <<<<<<    ************************************");
+			initiatDriver(Key.headless.name());
+			initObject();
+			int pageLoadTime = conf.readPropNum(Key.pageLoad.name());
+			int implicitLoadTime = conf.readPropNum(Key.implicitLoad.name());
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(pageLoadTime));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitLoadTime));
+
+		} else {
+
+			initiatDriver(conf.readProp(Key.browser.name()));
+			initObject();
+			driver.manage().window().maximize();
+			int pageLoadTime = conf.readPropNum(Key.pageLoad.name());
+			int implicitLoadTime = conf.readPropNum(Key.implicitLoad.name());
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(pageLoadTime));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitLoadTime));
+		}
 		if (url == null) {
 			try {
 				System.out.println("*********************************************************");
@@ -77,8 +90,14 @@ public class TestBase {
 			WebDriverManager.edgedriver().setup();
 			driver = new EdgeDriver();
 			break;
+		case "headless":
+			WebDriverManager.chromedriver().setup();
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--headless");
+			driver = new ChromeDriver(options);
+			break;
 		default:
-			System.out.println("invalid broserkey, opening default browser");
+			System.out.println("invalid broserkey, default Browser >>>  Chrome  <<<<");
 			WebDriverManager.chromedriver().setup();
 			driver = new ChromeDriver();
 			break;
@@ -96,7 +115,7 @@ public class TestBase {
 
 	@AfterMethod
 	public void tearDown() {
-		driver.close();
+		driver.quit();
 	}
 
 }
