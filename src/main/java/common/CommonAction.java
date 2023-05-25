@@ -1,5 +1,7 @@
 package common;
 
+import static common.CommonWait.waitUntilClickable;
+import static common.CommonWait.waitUntilVisible;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
@@ -11,6 +13,7 @@ import java.util.Date;
 import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -21,10 +24,7 @@ import org.openqa.selenium.support.ui.Select;
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
-
 import report.Log;
-import static common.CommonWait.waitUntilClickable;
-import static common.CommonWait.waitUntilVisible;
 import util.Configuration;
 import util.Misc;
 
@@ -49,16 +49,25 @@ public class CommonAction {
 		return innerText;
 	}
 
+	// regular click
 	public static void click(WebElement element) {
 		waitUntilClickable(element);
 		element.click();
 		Log.log(Misc.getClassName(Thread.currentThread()), element + " Has been clicked");
 	}
 
-	public static void jsClick(WebElement element, WebDriver driver) {
+	// overloaded click with 2 args
+	public static void click(WebElement element, WebDriver driver) {
 		JavascriptExecutor executor = (JavascriptExecutor) driver;
 		executor.executeScript("arguments[0].click();", element);
 		Log.log(Misc.getClassName(Thread.currentThread()), element + " Has been clicked with JavascriptExec");
+	}
+
+	// overloaded click with 3 args
+	public static void click(WebElement element, WebDriver driver, String key) {
+		Actions newTab = new Actions(driver);
+		newTab.keyDown(Keys.CONTROL).click(element).keyUp(Keys.CONTROL).build().perform();
+		Log.log(Misc.getClassName(Thread.currentThread()), element + " Has been clicked with controlClick");
 	}
 
 	public static void insert(WebElement element, String text) {
@@ -88,8 +97,13 @@ public class CommonAction {
 
 	public static void screenshotElement(WebDriver driver, String name, WebElement element) throws Exception {
 		waitUntilVisible(element);
-		File src = element.getScreenshotAs(OutputType.FILE);
-		FileHandler.copy(src, new File(screenshotPath + name + ".png"));
+		File source = element.getScreenshotAs(OutputType.FILE);
+		String dir = createDirectory(screenshotPath);
+		File screenShotTarget = new File(dir + name + ".png");
+		FileUtils.copyFile(source, screenShotTarget);
+
+		// We can use either FileHandler or FileUtils
+		// FileHandler.copy(src, new File(screenshotPath + name + ".png"));
 
 	}
 
@@ -108,7 +122,7 @@ public class CommonAction {
 		actions.moveToElement(element).build().perform();
 	}
 
-	public static void roboKey(String key) {
+	public static void roboKey(String key, WebElement element) {
 		String k = key.toLowerCase();
 		try {
 			Robot robot = new Robot();
