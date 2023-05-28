@@ -1,0 +1,36 @@
+Project Structure & Workflow
+The project structure and workflow of TDD_NIH are organized as follows:
+
+src/main/java
+Smoke.xml: Contains tests for critical major functionalities such as drivers and URL testing.
+MasterSuite.xml: Running TestNG Suite on the desired XML file (Smoke / MasterSuite) triggers the @BeforeMethod in TestBase with the URL passed from the XML file.
+base
+TestBase: Initializes the browser (default: Chrome) using WebDriverManager and boots up the page objects with the WebDriver interface. It also handles preconditions such as page load, timeouts, and maximizing the browser. The URL is retrieved using driver.get().
+common
+Contains frequently used helper methods, including wait-related methods.
+pageObject
+Contains separate page object classes that include locators and functional methods.
+util
+Contains frequently used key constants (Key.java enum) and the configuration file with the required property file handlers. Misc.java provides the getClassName() method to retrieve the corresponding class and method names for logging. ScreenRecorderUtil.java contains screen recording utility methods for capturing and recording test execution, with videos stored in the iMovies directory.
+src/test/java
+auto
+Each test page is designed to run corresponding test cases with TestNG (@Test) annotations. The test pages call relevant functional methods of the page objects they resemble.
+
+AutoHomePageTest: Responsible for running all test cases for the HomePage page object.
+
+AutoGrantsAndFundingTest: Responsible for running all test cases for the GrantsAndFunding page object.
+
+AutoNewsAndEventsTest: Responsible for running all test cases for the NewsAndEvents page object.
+
+misc
+An empty directory kept for future unit tests and other purposes.
+test-output (generated at runtime)
+The following directories are generated at runtime:
+
+htmlText: Captures screenshots and performs Optical Character Recognition (OCR) on the images using the ITesseract library. The extracted text is saved to a text file using the textToFile() method in common.CommonAction.java. This enables automatic extraction and storage of text information from images for further analysis and verification.
+
+iMovies: Saves video record files in the format "methodName-timestamp.avi". The Monte-Screen-Recorder library is used to capture test execution and facilitate sharing with team members. This powerful feature enhances collaboration and helps identify issues visually.
+
+screenshot: Generated whenever the screenshotElement() or screenshotPage() methods in common.CommonAction.java are called. For element screenshots, the current driver, the name of the image file, and the web element's locator are passed. For entire page screenshots, only the current driver and the name of the image file are required. Screenshots are saved in the .png format.
+
+logs: Generated whenever the log() method in report.Log.java is called. It removes console logs using removeConsole() and saves them as a text file with a timestamp.
