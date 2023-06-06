@@ -21,19 +21,13 @@ public class Log {
 
 	private static final Path logsPath = Paths.get("test-output", "logs");
 //	This line creates a Path object named logsPath that represents the path to the "logs" directory. The directory will be created in the test-output directory.
-	
-	
+
 	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
 //	This line creates a DateTimeFormatter object named formatter that is used to format the date and time information in the log file name.
-	
+
 	private static FileHandler fileHandler;
 //	This line declares a FileHandler object named fileHandler. 
-	
-	
 
-
-	
-	
 //	The object will be initialized in the static block below.
 	static {
 		try {
@@ -61,35 +55,35 @@ public class Log {
 	 * 
 	 * LocalDateTime.now().format(formatter) + ".txt"; creates a file name for the
 	 * log file. The file name includes a timestamp formatted using the formatter
-	 * object. 
+	 * object.
 	 * 
-	 * Path logFilePath = logsPath.resolve(fileName); creates a Path object
-	 * named logFilePath that represents the path to the log file. The path is
-	 * created by combining the logsPath and fileName variables. 
+	 * Path logFilePath = logsPath.resolve(fileName); creates a Path object named
+	 * logFilePath that represents the path to the log file. The path is created by
+	 * combining the logsPath and fileName variables.
 	 * 
-	 * fileHandler = new FileHandler(logFilePath.toString(), true); initializes the fileHandler object
-	 * with the path to the log file and the option to append to the file if it
-	 * already exists. 
+	 * fileHandler = new FileHandler(logFilePath.toString(), true); initializes the
+	 * fileHandler object with the path to the log file and the option to append to
+	 * the file if it already exists.
 	 * 
-	 * fileHandler.setLevel(Level.ALL); sets the logging level for
-	 * the fileHandler object to ALL, which means it will log all messages.
+	 * fileHandler.setLevel(Level.ALL); sets the logging level for the fileHandler
+	 * object to ALL, which means it will log all messages.
 	 * 
 	 * 
 	 * fileHandler.setFormatter(new Formatter() {...}); sets a custom formatter for
 	 * the fileHandler object that formats each log message.
 	 * 
+	 * Just a test
 	 * 
 	 * logger.addHandler(fileHandler); adds the fileHandler object to the logger
 	 * object's list of handlers.
 	 */
 	public static void log(String actionMethods, String msg) {
 		removeConsole();
-		
+
 		Reporter.log(msg + "<br>"); // for html report
 		logger.log(Level.INFO, actionMethods + " - " + msg);// for console report
 	}
-	
-	
+
 //	remove console logs
 	public static void removeConsole() {
 		Logger rootLogger = Logger.getLogger("");
