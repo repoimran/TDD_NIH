@@ -66,13 +66,10 @@ public class Log {
 	 * the file if it already exists.
 	 * 
 	 * fileHandler.setLevel(Level.ALL); sets the logging level for the fileHandler
-	 * object to ALL, which means it will log all messages. another test 2nd time
-	 * 
+	 * object to ALL, which means it will log all messages.
 	 * 
 	 * fileHandler.setFormatter(new Formatter() {...}); sets a custom formatter for
 	 * the fileHandler object that formats each log message.
-	 * 
-	 * Just a test
 	 * 
 	 * logger.addHandler(fileHandler); adds the fileHandler object to the logger
 	 * object's list of handlers.
