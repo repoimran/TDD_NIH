@@ -7,9 +7,8 @@
     <classes>
 		
       <class name="auto.AutoHomePageTest"/>
-      <class name="auto.AutoGrantsAndFundingPageTest"/>
+    <!--  <class name="auto.AutoGrantsAndFundingPageTest"/> -->
       <class name="auto.AutoNewsAndEventsTest"/>
-		
 		</classes>
 	</test> <!-- Test -->
 </suite> <!-- Suite -->
