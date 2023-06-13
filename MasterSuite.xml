@@ -3,13 +3,7 @@
 <suite name="NIH.GOV">
 	<parameter name="url" value="https://www.nih.gov/" />
 	<!--    <parameter name="headless" value="headless" />  -->
-  <test thread-count="5" name="Regression Test">
-	  
-	  <groups>
-			<run>
-				<exclude name="smoke"></exclude>
-			</run>
-		</groups>
+  <test thread-count="5" name="All TDD TEST">
     <classes>
 		
       <class name="auto.AutoHomePageTest"/>
